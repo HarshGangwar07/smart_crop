@@ -1,0 +1,15 @@
+# Python
+*.pyc
+__pycache__/
+
+# Virtual Environment
+smart-crop-env/
+
+# Django DB
+db.sqlite3
+
+# Logs
+*.log
+
+# Media files
+/media/
