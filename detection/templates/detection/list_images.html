@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Images</title>
+</head>
+<body>
+    {% block content %}
+    <div class="container mt-4">
+        <h2>Uploaded Leaf Images</h2>
+        <div class="row">
+            {% for image in images %}
+                <div class="card mb-4 shadow-sm">
+                    <img src="{{ image.image.url }}" class="card-img-top" alt="Leaf Image">
+                    <div class="card-body">
+                        <p class="card-text">Uploaded: {{ image.date_uploaded|date:"d M Y H:i" }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>
