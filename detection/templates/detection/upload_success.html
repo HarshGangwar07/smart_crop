@@ -6,7 +6,13 @@
     <title>Upload Successful</title>
 </head>
 <body>
-    <h1>Success!</h1>
-    <p>Your image has been uploaded successfully. The disease detection results will be shown soon.</p>
+    <h2>Successful</h2>
+    <p><strong>Predicted Disease : </strong> {{ leaf.predicted_label }}</p>
+    <p><strong>Confidence Score  :</strong>{{ leaf.confidence_score }}%</p>
+    {% if leaf.image %}
+        <img src = "{{ leaf.image.url }}" alt="Uploaded Lead Image" style="max-width: 300;">
+    {% else %}
+        <p>No image available.</p>
+    {% endif %}
 </body>
 </html>

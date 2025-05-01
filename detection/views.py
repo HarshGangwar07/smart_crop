@@ -24,14 +24,16 @@ def upload_leaf_image(request):
             leaf_image.confidence_score = confidence
             leaf_image.save()
 
-            return redirect('upload_success')
+            return redirect('upload_success',leaf_id=leaf_image.pk)
     else:
         form = LeafImageForm()
     return render(request, 'detection/upload_image.html', {'form':form})
     
-def upload_success(request):
-    return render(request, 'detection/upload_success.html')
+def upload_success(request,leaf_id):
+    leaf = LeafImage.objects.get(pk=leaf_id)
+    return render(request, 'detection/upload_success.html', {'leaf':leaf})
 
 def leaf_image_list(request):
     images = LeafImage.objects.all().order_by('-date_uploaded')
     return render(request,'detection/list_images.html',{'images':images})
+
