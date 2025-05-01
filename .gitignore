@@ -14,3 +14,6 @@ db.sqlite3
 # Media files
 /media/
 smart_crop/settings_local.py
+
+#adding .env to gitignore
+.env
