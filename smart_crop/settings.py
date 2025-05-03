@@ -9,15 +9,21 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
-from pathlib import Path
 import environ
+import os
+from pathlib import Path
+import boto3
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 env = environ.Env()
-environ.Env.read_env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+# For a Python library that facilitates the use of environment variables to configure Django applications
+# particularly when dealing with sensitive secrets like API keys and database passwords
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -26,9 +32,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-zwfs7#=l+r^*@@#i1(wi(9oh8h%+)a5@)x+17$&2aavbn_4b$3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -41,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'storages', # For S3 storage
 ]
 
 MIDDLEWARE = [
@@ -106,6 +113,29 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+#we have to create a dictionary to store images in s3 as the bydefault it is stored in local storage.
+STORAGES = {
+    "default": {
+        "BACKEND": "storages.backends.s3boto3.S3Boto3Storage",
+        "OPTIONS": {
+            "access_key": os.environ.get("AWS_ACCESS_KEY_ID"),
+            "secret_key": os.environ.get("AWS_SECRET_ACCESS_KEY"),
+            "bucket_name": os.environ.get("AWS_STORAGE_BUCKET_NAME"),
+            "region_name": os.environ.get("AWS_S3_REGION_NAME"),
+            "querystring_auth": False,
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
+
+
+
+
+
+MEDIA_URL = f"https://{STORAGES['default']['OPTIONS']['bucket_name']}.s3.{STORAGES['default']['OPTIONS']['region_name']}.amazonaws.com/"
+# Replace with your actual S3 URL   
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
@@ -138,8 +168,9 @@ try:
 except ImportError:
     pass
 
-import os
+import logging
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#Set up logging
+logging.basicConfig(level=logging.DEBUG)
+
 

@@ -6,13 +6,15 @@
     <title>Upload Successful</title>
 </head>
 <body>
-    <h2>Successful</h2>
-    <p><strong>Predicted Disease : </strong> {{ leaf.predicted_label }}</p>
-    <p><strong>Confidence Score  :</strong>{{ leaf.confidence_score }}%</p>
+    <h1>Upload Success</h1>
+    <p>Image:</p>
     {% if leaf.image %}
-        <img src = "{{ leaf.image.url }}" alt="Uploaded Lead Image" style="max-width: 300;">
+        <img src="{{ leaf.image.url }}" alt="Uploaded Leaf Image" style="max-width: 300px;">
     {% else %}
         <p>No image available.</p>
     {% endif %}
+
+    <p>Prediction: {{ prediction }}</p>
+    <p>Confidence: {{ confidence }}%</p>
 </body>
 </html>
