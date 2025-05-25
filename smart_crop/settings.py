@@ -36,6 +36,9 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
+# settings.py
+ML_MODEL_PATH = os.path.join(BASE_DIR, 'ml_models_training', 'model', 'plant_disease_model.h5')
+
 
 # Application definition
 

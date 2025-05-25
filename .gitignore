@@ -4,6 +4,7 @@ __pycache__/
 
 # Virtual Environment
 smart_crop_env/
+smart_crop_newversion_env/
 
 # Django DB
 db.sqlite3

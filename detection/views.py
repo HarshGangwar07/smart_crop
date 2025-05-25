@@ -2,7 +2,8 @@ from django.shortcuts import render,redirect
 from django.core.files.storage import default_storage
 from .forms import LeafImageForm
 from .models import LeafImage
-from .utils import dummy_predict
+from .ml_models.predict import predict_disease
+from PIL import Image
 #from django.contrib.auth.decorators import login_required
 
 
@@ -26,20 +27,18 @@ def upload_success(request, leaf_id):
     leaf = LeafImage.objects.get(pk=leaf_id)
 
     try:
-        image_url = leaf.image.url
-    except NotImplementedError:
-        # fallback if url is not supported
-        image_url = default_storage.url(leaf.image.name)
+        # ✅ Open image from default storage (S3) using in-memory file
+        with default_storage.open(leaf.image.name, 'rb') as f:
+            img = Image.open(f)
+            img = img.convert("RGB")  # Ensure it's in RGB format
     except Exception as e:
-        print("Error getting image URL:", e)
-        image_url = None
-
-    # Debug: ensure image_url is usable
-    print("Image URL for prediction:", image_url)
-
-    if image_url:
-        prediction, confidence = dummy_predict(image_url)
-        print(f"Prediction: {prediction}, Confidence: {confidence}")  # Debugging
+        print("Error opening image:", e)
+        img = None
+    
+    # Run prediction using real model
+    if img:
+        prediction, confidence = predict_disease(img)  #  Real prediction function
+        print(f"Prediction: {prediction}, Confidence: {confidence}")
     else:
         prediction, confidence = None, None
 
@@ -48,7 +47,6 @@ def upload_success(request, leaf_id):
         'prediction': prediction,
         'confidence': confidence
     })
-
 
 def leaf_image_list(request):
     images = LeafImage.objects.all().order_by('-date_uploaded')
