@@ -34,6 +34,7 @@ An AI-powered web application built with Django that detects crop diseases from 
 
 ## 🖼️ Demo
 
+(SOON WILL POST HERE)
 ![App Screenshot](https://your-screenshot-url-if-any)
 
 Try it live: [https://smartcrop.example.com](https://smartcrop.example.com) *(if deployed)*
