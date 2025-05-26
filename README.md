@@ -92,17 +92,17 @@ smart_crop/
 - AWS S3 bucket (configured)
 - Docker (optional but recommended)
 
-### 1. Clone the Repository
+## 1. Clone the Repository
 
 ```bash
 git clone https://github.com/yourusername/smart_crop.git
 cd smart_crop
 ````
-### 2. Install Dependencies
+## 2. Install Dependencies
 ```bash
 pip install -r requirements.txt
 ```
-###3. Configure Environment
+##3. Configure Environment
 Create settings_local.py for sensitive data (DB, AWS, Secret Keys):
 ```bash
 # settings_local.py
@@ -121,16 +121,16 @@ AWS_ACCESS_KEY_ID = 'your-access-key'
 AWS_SECRET_ACCESS_KEY = 'your-secret-key'
 AWS_STORAGE_BUCKET_NAME = 'your-bucket-name'
 ```
-###4. Run Migrations
+##4. Run Migrations
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
-###5. Create Superuser
+##5. Create Superuser
 ```bash
 python manage.py createsuperuser
 ```
-###6. Run the Server
+##6. Run the Server
 ```bash
 python manage.py test
 ```
