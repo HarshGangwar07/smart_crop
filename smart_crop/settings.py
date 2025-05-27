@@ -43,6 +43,7 @@ ML_MODEL_PATH = os.path.join(BASE_DIR, 'ml_models_training', 'model', 'plant_dis
 # Application definition
 
 INSTALLED_APPS = [
+    'rest_framework', #Django REST framework for building APIs
     'detection',
     'django.contrib.admin',
     'django.contrib.auth',
