@@ -87,16 +87,23 @@ WSGI_APPLICATION = 'smart_crop.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
+import os
+from dotenv import load_dotenv
+
+load_dotenv() 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'smart_crop_db',
-        'USER': 'postgres',
-        'PASSWORD': 'Harsh@535',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('DATABASE_NAME', 'smart_crop_db'),
+        'USER': os.getenv('DATABASE_USER', 'your_local_user'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'your_local_password'),
+        'HOST': os.getenv('DATABASE_HOST',),  # default to localhost for local dev
+        'PORT': os.getenv('DATABASE_PORT', '5432'),
     }
 }
+
+
 
 
 # Password validation
@@ -156,7 +163,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

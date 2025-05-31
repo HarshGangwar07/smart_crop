@@ -1,21 +1,15 @@
 import numpy as np
+import tensorflow as tf
 from PIL import Image
 from django.conf import settings
 import os
-import tensorflow as tf
 
-# Path to the .tflite model
-model_path = os.path.join(settings.BASE_DIR, 'ml_model', 'plant_disease_model.tflite')
+# Intialize the global variables 
+interpreter = None
+input_details = None
+output_details = None
 
-# Load the TFLite model and allocate tensors only once
-interpreter = tf.lite.Interpreter(model_path=model_path)
-interpreter.allocate_tensors()
-
-# Get input and output tensor details
-input_details = interpreter.get_input_details()
-output_details = interpreter.get_output_details()
-
-# Class names used for prediction
+# Class names for the plant disease
 class_names = [
     'Apple___Black_rot', 'Apple___healthy', 'Apple___rust',
     'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___healthy',
@@ -28,24 +22,35 @@ class_names = [
     'Tomato___Target_Spot', 'Tomato___Tomato_Yellow_Leaf_Curl_Virus',
     'Tomato___Tomato_mosaic_virus'
 ]
+# Load the TFLite model and allocate tensors
+def load_tflite_model():
+    global interpreter, input_details, output_details
+    model_path = os.path.join(settings.BASE_DIR, 'ml_model', 'plant_disease_model.tflite')
+    interpreter = tf.lite.Interpreter(model_path=model_path)
+    interpreter.allocate_tensors()
+    input_details = interpreter.get_input_details()
+    output_details = interpreter.get_output_details()
 
+# Predict disease from a PIL image
 def predict_disease(pil_image):
-    # Preprocess the image
-    image = pil_image.resize((128, 128))
-    image = np.array(image) / 255.0
-    image = np.expand_dims(image.astype(np.float32), axis=0)
+    global interpreter, input_details, output_details
+# Check if the interpreter is already loaded
+    if interpreter is None:
+        load_tflite_model()
 
-    # Set the input tensor
+# Resize and preprocess the image
+    image = pil_image.resize((128,128))
+    image = np.array(image, dtype=np.float32)
+    image = np.expand_dims(image, axis=0)
+    image = image / 255.0
+
+# Ensure the input tensor is of the correct shape
+
     interpreter.set_tensor(input_details[0]['index'], image)
-
-    # Run inference
     interpreter.invoke()
+    prediction = interpreter.get_tensor(output_details[0]['index'])
 
-    # Get the output tensor
-    output_data = interpreter.get_tensor(output_details[0]['index'])[0]
-
-    # Get predicted class and confidence
-    predicted_class = np.argmax(output_data)
-    confidence = float(output_data[predicted_class]) * 100
+    predicted_class = np.argmax(prediction, axis=1)[0]
+    confidence = float(np.max(prediction)) * 100
 
     return class_names[predicted_class], confidence

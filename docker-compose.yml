@@ -1,0 +1,32 @@
+
+services:
+  db:
+    image: postgres:15
+    container_name: smart_crop_db
+    environment:
+      POSTGRES_DB: smart_crop_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Harsh@535
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data  
+  web:
+    build: .
+    container_name: smart_crop_web
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_NAME=smart_crop_db
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=Harsh@535
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+
+volumes:
+  pgdata:
