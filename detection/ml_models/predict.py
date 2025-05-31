@@ -1,12 +1,21 @@
 import numpy as np
-from tensorflow.keras.models import load_model # type: ignore
-from tensorflow.keras.preprocessing.image import img_to_array
 from PIL import Image
 from django.conf import settings
 import os
+import tensorflow as tf
 
-model = None  # global model cache
+# Path to the .tflite model
+model_path = os.path.join(settings.BASE_DIR, 'ml_model', 'plant_disease_model.tflite')
 
+# Load the TFLite model and allocate tensors only once
+interpreter = tf.lite.Interpreter(model_path=model_path)
+interpreter.allocate_tensors()
+
+# Get input and output tensor details
+input_details = interpreter.get_input_details()
+output_details = interpreter.get_output_details()
+
+# Class names used for prediction
 class_names = [
     'Apple___Black_rot', 'Apple___healthy', 'Apple___rust',
     'Corn_(maize)___Cercospora_leaf_spot Gray_leaf_spot', 'Corn_(maize)___healthy',
@@ -21,21 +30,22 @@ class_names = [
 ]
 
 def predict_disease(pil_image):
-    global model
-    model_path = os.path.join(settings.BASE_DIR, 'ml_model', 'plant_disease_model.h5')
-    if model is None:
-        try:
-            model = load_model(model_path)
-        except OSError:
-            print(f"Model file not found at {model_path}. Returning dummy result.")
-            return "Model Not Found", 0.0
+    # Preprocess the image
+    image = pil_image.resize((128, 128))
+    image = np.array(image) / 255.0
+    image = np.expand_dims(image.astype(np.float32), axis=0)
 
-    image = pil_image.resize((128,128))
-    image = img_to_array(image)
-    image = np.expand_dims(image, axis=0)
-    image = image / 255.0
+    # Set the input tensor
+    interpreter.set_tensor(input_details[0]['index'], image)
 
-    prediction = model(image, training=False).numpy()
-    predicted_class = np.argmax(prediction, axis=1)[0]
+    # Run inference
+    interpreter.invoke()
 
-    return class_names[predicted_class], float(np.max(prediction)) * 100
+    # Get the output tensor
+    output_data = interpreter.get_tensor(output_details[0]['index'])[0]
+
+    # Get predicted class and confidence
+    predicted_class = np.argmax(output_data)
+    confidence = float(output_data[predicted_class]) * 100
+
+    return class_names[predicted_class], confidence
