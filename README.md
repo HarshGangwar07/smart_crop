@@ -13,7 +13,7 @@ An AI-powered web application built with Django that detects crop diseases from 
 - 🔐 User authentication and role-based access control (OAuth support included).
 - ⚙️ Background ML inference with Celery (future enhancement).
 - 📊 Admin dashboard for managing data.(Currently working on it)
-- 📦 Dockerized for easy deployment.(Not deployed yet)
+- 📦 Dockerized for easy deployment.
 - 🧪 Unit-tested with high coverage.
 
 ---
