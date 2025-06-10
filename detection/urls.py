@@ -13,3 +13,5 @@ urlpatterns = [
     path('api/images/<int:pk>/', LeafImageDetailView.as_view(), name='leafimage-detail'),
     path('api/predict/', PredictDiseaseView.as_view(), name='predict-disease'),
 ]
+
+
