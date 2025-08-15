@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Crop Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100">
+
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="relative w-full max-w-4xl mx-4 lg:mx-0 bg-white rounded-2xl shadow-2xl flex flex-col md:flex-row overflow-hidden">
+            
+            <!-- Left Panel: Graphic and Logo -->
+            <div class="relative w-full md:w-1/2 bg-gray-900 p-8 flex flex-col justify-center items-center text-white min-h-[300px] md:min-h-0">
+                <canvas id="particle-canvas"></canvas>
+                <div class="content-overlay text-center">
+                    <!-- SVG Logo -->
+                    <svg class="h-16 w-16 mx-auto mb-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M16.1213 14.1213C15.6331 14.6095 15.0229 14.9613 14.3458 15.149C13.6687 15.3368 12.9463 15.3546 12.2511 15.1999C11.5559 15.0452 10.9113 14.7225 10.3739 14.2625C9.83652 13.8026 9.42393 13.2205 9.17215 12.5684C8.92037 11.9162 8.8381 11.2148 8.93441 10.5283C9.03072 9.8418 9.30165 9.19209 9.72166 8.63604C10.1417 8.08000 10.6971 7.63604 11.3358 7.34674C11.9746 7.05744 12.6775 6.93312 13.3644 6.98782L13.5 7" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    <h1 class="text-2xl font-bold tracking-wider">SMART CROP</h1>
+                </div>
+            </div>
+
+            <!-- Right Panel: Login Form -->
+            <div class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Log In</h2>
+                
+                <form action="#" method="POST">
+                    <!-- Username / Email Input -->
+                    <div class="mb-5">
+                        <label for="username" class="block text-sm font-medium text-gray-600 mb-2">Username / Email Address</label>
+                        <input type="text" id="username" name="username" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent transition duration-300" placeholder="Enter your username or email">
+                    </div>
+
+                    <!-- Password Input -->
+                    <div class="mb-5">
+                        <label for="password" class="block text-sm font-medium text-gray-600 mb-2">Password</label>
+                        <input type="password" id="password" name="password" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent transition duration-300" placeholder="Enter your password">
+                    </div>
+
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex items-center justify-between mb-6 text-sm">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="remember" name="remember" class="h-4 w-4 text-green-600 focus:ring-green-500 border-gray-300 rounded">
+                            <label for="remember" class="ml-2 text-gray-600">Remember me</label>
+                        </div>
+                        <a href="#" class="font-medium text-green-600 hover:text-green-500 transition duration-300">Forgot Password?</a>
+                    </div>
+
+                    <!-- Login Button -->
+                    <div>
+                        <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold py-3 px-4 rounded-lg hover:from-green-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-lg transform hover:scale-105 transition duration-300">
+                            Log In
+                        </button>
+                        <!-- Login with Google Button -->
+                        <div class="mt-6">
+                            <button type="button" class="w-full flex items-center justify-center gap-2 border border-gray-300 bg-white text-gray-700 font-semibold py-3 px-4 rounded-lg hover:bg-gray-50 shadow transition duration-300"
+                                onclick="window.location.href='/accounts/google/login/'">
+                                <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="h-5 w-5">
+                                Login with Google
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                
+                <!-- Sign Up Link -->
+                <div class="mt-8 text-center text-sm">
+                    <p class="text-gray-600">Don't have an account? <a href="#" class="font-medium text-green-600 hover:text-green-500 transition duration-300">Sign up</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js" defer></script>
+
+</body>
+</html>
