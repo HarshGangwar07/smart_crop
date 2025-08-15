@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Crop - Disease Detection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 flex flex-col min-h-screen font-['Inter',_sans-serif]">
+
+    <!-- Header -->
+    <header class="bg-white shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <!-- SVG Logo -->
+                <svg class="h-10 w-10" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L2 7V17L12 22L22 17V7L12 2Z" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16.1213 14.1213C15.6331 14.6095 15.0229 14.9613 14.3458 15.149C13.6687 15.3368 12.9463 15.3546 12.2511 15.1999C11.5559 15.0452 10.9113 14.7225 10.3739 14.2625C9.83652 13.8026 9.42393 13.2205 9.17215 12.5684" stroke="#10B981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="ml-3 text-xl font-bold text-green-700 tracking-wide">SMART CROP</span>
+            </div>
+            <div>
+                <a href="index.html" class="text-green-600 font-semibold hover:underline">Logout</a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-6 py-12 flex flex-col items-center justify-center">
+        <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-8 text-center">Upload a leaf image for disease detection</h1>
+        <form class="w-full max-w-md bg-white p-8 rounded-xl shadow-md flex flex-col items-center" enctype="multipart/form-data">
+            <label for="leafImage" class="block text-gray-700 font-medium mb-2 w-full text-left">Choose an image</label>
+            <input type="file" id="leafImage" name="leafImage" accept="image/*" class="mb-6 w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-green-400 focus:border-transparent transition duration-300" required>
+            <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold py-3 px-4 rounded-lg hover:from-green-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-lg transform hover:scale-105 transition duration-300">Upload Image</button>
+        </form>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white shadow-inner mt-12">
+        <div class="container mx-auto px-6 py-4 text-center text-gray-500 text-sm">
+            &copy; 2025 Smart Crop. All rights reserved.
+        </div>
+    </footer>
