@@ -23,6 +23,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('detection/',include('detection.urls')),
+    path('accounts/', include('allauth.urls')), #Allauth URLs for user authentication
+    path('api/auth/', include('accounts.urls')), #Custom authentication URLs
 ]
 
 if settings.DEBUG:
