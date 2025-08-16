@@ -8,6 +8,7 @@ from .serializers import LeafImageSerializer
 from .ml_models.predict import predict_disease
 from PIL import Image
 import logging
+import os
 
 # Upload & List leaf images
 class LeafImageListCreateView(generics.ListCreateAPIView):
@@ -47,10 +48,22 @@ class PredictDiseaseView(APIView):
             })
         except Exception as e:
             logging.exception("Error during disease prediction")
-        
+            return Response({"error": "An internal error has occurred."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # Retrieve, update, delete individual image by ID
 class LeafImageDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = LeafImage.objects.all()
     serializer_class = LeafImageSerializer
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DATABASE_NAME', 'your_database_name'),
+        'USER': os.getenv('DATABASE_USER', 'your_database_user'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'your_database_password'),
+        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
+        'PORT': os.getenv('DATABASE_PORT', '5432'),
+    }
+}
