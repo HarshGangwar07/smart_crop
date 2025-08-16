@@ -55,15 +55,3 @@ class PredictDiseaseView(APIView):
 class LeafImageDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = LeafImage.objects.all()
     serializer_class = LeafImageSerializer
-
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASE_NAME', 'your_database_name'),
-        'USER': os.getenv('DATABASE_USER', 'your_database_user'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'your_database_password'),
-        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
-        'PORT': os.getenv('DATABASE_PORT', '5432'),
-    }
-}
