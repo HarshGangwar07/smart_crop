@@ -45,21 +45,60 @@ ML_MODEL_PATH = os.path.join(BASE_DIR, 'ml_models_training', 'model', 'plant_dis
 INSTALLED_APPS = [
     'rest_framework', #Django REST framework for building APIs
     'detection',
+    'accounts', #Django app for user accounts
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount', 
+    'allauth.socialaccount.providers.google', # Google provider for social authentication
     'storages', # For S3 storage
 ]
+
+SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'    #Redirect URL after login
+LOGOUT_REDIRECT_URL = '/'   #Redirect URL after logout
+
+#Optional settings to match normal login
+ACCOUNT_USERNAME_REQUIRED = True
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+ACCOUNT_EMAIL_VERIFICATION = 'none' 
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+
+SOCIALACCOUNT_QUERY_EMAIL = True
+
+# Google OAuth credentials (pulled from .env)
+SOCIAL_AUTH_GOOGLE_CLIENT_ID = env("GOOGLE_CLIENT_ID")
+SOCIAL_AUTH_GOOGLE_SECRET = env("GOOGLE_CLIENT_SECRET")
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -92,19 +131,22 @@ from dotenv import load_dotenv
 
 load_dotenv() 
 
+#DATABASES = {
+ #   'default': {
+  #    'USER': os.getenv('DATABASE_USER', 'your_local_user'),
+   #     'PASSWORD': os.getenv('DATABASE_PASSWORD', 'your_local_password'),
+    #    'HOST': os.getenv('DATABASE_HOST',),  # default to localhost for local dev
+     #   'PORT': os.getenv('DATABASE_PORT', '5432'),
+    #}
+#}
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DATABASE_NAME', 'smart_crop_db'),
-        'USER': os.getenv('DATABASE_USER', 'your_local_user'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'your_local_password'),
-        'HOST': os.getenv('DATABASE_HOST',),  # default to localhost for local dev
-        'PORT': os.getenv('DATABASE_PORT', '5432'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -175,14 +217,16 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ...existing settings above...
 
-try:
-    from .settings_local import *
-except ImportError:
-    pass
+#try:
+ #   from .settings_local import *
+#except ImportError:
+#    pass
 
 import logging
 
 #Set up logging
 logging.basicConfig(level=logging.DEBUG)
-
-
+LANGUAGE_CODE = 'en'
+LANGUAGES = [
+    ('en', 'English'),
+]
