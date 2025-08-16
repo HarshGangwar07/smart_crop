@@ -59,6 +59,11 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google', # Google provider for social authentication
     'storages', # For S3 storage
 ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}   
 
 SITE_ID = 1
 LOGIN_REDIRECT_URL = '/'    #Redirect URL after login
@@ -143,8 +148,12 @@ load_dotenv()
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DATABASE_NAME', 'your_database_name'),
+        'USER': os.getenv('DATABASE_USER', 'your_database_user'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'your_database_password'),
+        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
+        'PORT': os.getenv('DATABASE_PORT', '5432'),
     }
 }
 
