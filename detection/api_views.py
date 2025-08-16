@@ -7,7 +7,7 @@ from .models import LeafImage
 from .serializers import LeafImageSerializer
 from .ml_models.predict import predict_disease
 from PIL import Image
-
+import logging
 # Upload & List leaf images
 class LeafImageListCreateView(generics.ListCreateAPIView):
     queryset = LeafImage.objects.all().order_by('-date_uploaded')  
@@ -45,7 +45,8 @@ class PredictDiseaseView(APIView):
                 "image_url": default_storage.url(image_path)
             })
         except Exception as e:
-            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            logging.exception("Error during disease prediction")
+            return Response({"error": "An internal error has occurred."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # Retrieve, update, delete individual image by ID
