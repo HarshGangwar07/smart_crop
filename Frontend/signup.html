@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Smart Crop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-md bg-white rounded-xl shadow-lg p-8 mt-8">
+        <h2 class="text-2xl font-bold text-center text-green-700 mb-6">Create an Account</h2>
+        <form id="signupForm" novalidate>
+            <div class="mb-4">
+                <label for="username" class="block text-gray-700 font-medium mb-2">Username</label>
+                <input type="text" id="username" name="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent transition duration-300" required>
+                <p class="text-red-500 text-xs mt-1 hidden" id="usernameError">Username is required (min 3 characters).</p>
+            </div>
+            <div class="mb-4">
+                <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
+                <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent transition duration-300" required>
+                <p class="text-red-500 text-xs mt-1 hidden" id="emailError">Please enter a valid email address.</p>
+            </div>
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700 font-medium mb-2">Password</label>
+                <input type="password" id="password" name="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-400 focus:border-transparent transition duration-300" required>
+                <p class="text-red-500 text-xs mt-1 hidden" id="passwordError">Password must be at least 6 characters.</p>
+            </div>
+            <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-teal-500 text-white font-bold py-3 px-4 rounded-lg hover:from-green-600 hover:to-teal-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-lg transition duration-300">Sign Up</button>
+        </form>
+        <div class="mt-6 text-center text-sm">
+            <p class="text-gray-600">Already have an account? <a href="index.html" class="font-medium text-green-600 hover:text-green-500 transition duration-300">Log in</a></p>
+        </div>
+    </div>
+    <script>
+        const form = document.getElementById('signupForm');
+        const username = document.getElementById('username');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const usernameError = document.getElementById('usernameError');
+        const emailError = document.getElementById('emailError');
+        const passwordError = document.getElementById('passwordError');
+
+        // Create and append the success overlay
+        function showSuccessOverlay() {
+            const overlay = document.createElement('div');
+            overlay.className = 'fixed inset-0 flex items-center justify-center z-50';
+            overlay.innerHTML = `
+                <div class="bg-gradient-to-br from-green-400 via-teal-400 to-green-600 p-8 rounded-2xl shadow-2xl flex flex-col items-center animate-fade-in">
+                    <svg class="h-16 w-16 text-white mb-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" stroke="white" stroke-width="2" fill="none"/><path d="M8 12l2 2l4-4" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                    <h3 class="text-2xl font-bold text-white mb-2">Account Created!</h3>
+                    <p class="text-white text-center mb-1">Redirecting to login page...</p>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+        }
+
+        // Add fade-in animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+        @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+        .animate-fade-in { animation: fade-in 0.5s; }
+        `;
+        document.head.appendChild(style);
+
+        form.addEventListener('submit', function(e) {
+            let valid = true;
+            // Username validation
+            if (username.value.trim().length < 3) {
+                usernameError.classList.remove('hidden');
+                valid = false;
+            } else {
+                usernameError.classList.add('hidden');
+            }
+            // Email validation
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailPattern.test(email.value.trim())) {
+                emailError.classList.remove('hidden');
+                valid = false;
+            } else {
+                emailError.classList.add('hidden');
+            }
+            // Password validation
+            if (password.value.length < 6) {
+                passwordError.classList.remove('hidden');
+                valid = false;
+            } else {
+                passwordError.classList.add('hidden');
+            }
+            if (!valid) {
+                e.preventDefault();
+            } else {
+                e.preventDefault();
+                showSuccessOverlay();
+                setTimeout(function() {
+                    window.location.href = 'index.html';
+                }, 1800);
+            }
+        });
+    </script>
+</body>
+</html>
